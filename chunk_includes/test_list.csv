@@ -1,0 +1,16 @@
+﻿item,itemType,context1,context2,critical,grammatical_match,socstat_critical,socstat_context,register_match,item,type,list
+0.1,practice,Nach einem erfolgreichen Tag im Job wollte Lena feiern.,Sie sagte zu dem Kellner:,Holen Sie mir bitte einen Rotwein aus dem Keller!,xxx,xxx,xxx,xxx,0.1,practice,test
+0.2,practice,Am Freitagabend war es endlich soweit.,Mario ging vorfreudig zur Bar:,Dort konnte man gute Cocktails trinken.,xxx,xxx,xxx,xxx,0.2,practice,test
+0.3,practice,Die Ermittler wollten ein besseres Verständnis über die Ausschreitungen gewinnen.,Im Bericht stand:,Den Demonstranten observiert die Polizistin.,xxx,xxx,xxx,xxx,0.3,practice,test
+1,critical,Ne Menge Leute hatte sich vor der Bar versammelt.,Der Türsteher steckte dem coolen Partygirl:,Der Trinker diffamierte den Taxifahrer. ,no,high,low,mismatch,1,critical,test
+2,critical,Kürzlich wurde ein Gerichtsprozess eingeleitet.,Der Gefängnisvorstand bezeugte in der Anhörung:,Der Skinhead züchtigte den Häftling.,no,high,high,match,2,critical,test
+3,critical,In der Schule ist was Krasses passiert.,Der Typ verbreitete auf WhatsApp:,Der Sportlehrer ärgerte den Wettläufer. ,no,low,low,match,3,critical,test
+4,critical,Der Blockbuster war echt cooler Stuff.,Der Klatschreporter tippte in der BILD:,Die Regisseurin koste den Hauptdarsteller.,yes,high,low,mismatch,4,critical,test
+5,critical,Das Volk wurde schon damals über die Sachlage informiert.,Der Delegierte übersandte die amtliche Botschaft:,Der Bischof tadelte den Herrscher.,no,high,high,match,5,critical,test
+6,critical,Am Morgen wurde sorgfältig gearbeitet.,Der Bürgermeister proklamierte im Amtsblatt:,Der Detektiv übertölpelte den Gauner.,yes,low,high,mismatch,6,critical,test
+7,critical,Freitags liefen irgendwelche Trash-Krimis im TV.,Der Alte johlte vor dem Fernseher:,Der Kriminalbeamte übervorteilte den Raubmörder.,yes,high,low,mismatch,7,critical,test
+8,critical,Während der letzten Meisterschaften fand ein Skandal statt.,Die Juroren verlasen ihr Votum:,Der Sporttaucher täuschte den Brustschwimmer. ,yes,high,high,match,8,critical,test
+9,critical,Die Story von der Pauschalreise wurde im Reisebüro rumerzählt.,Die Beamtin kritzelte auf den Zettel:,Der Reiseleiter erspähen den Einzelgänger.,no,high,low,mismatch,9,critical,test
+10,critical,Die Autowerkstatt hatte eine empörte Kundenbeschwerde erhalten.,Der Werkstattinhaber bekundete bestürzt:,Der Autobesitzer belästigte den Mechaniker.,yes,high,high,match,10,critical,test
+11,critical,Lisa musste babysitten und war gleichzeitig shoppen.,Die Babysitterin checkte im Laden:,Die Verkäuferin beäugelte das Kind.,yes,low,low,match,11,critical,test
+12,critical,Die Professorin erlebte vor der Sprechstunde einen Zwischenfall.,Die Akademikerin bedauerte in der Konversation:,Der Passant schmähte den Obdachlosen.,yes,high,high,match,12,critical,test
