@@ -21,10 +21,13 @@ PennController.ResetPrefix(null);
 //PennController.DebugOff() // use for the final version
 var progressBarText = "Fortschritt"; //Changes the text of the progress bar
 PennController.Sequence( "welcome",
+                         "demographics",
                          "instructions",
                          "practice", "end_practice",
-                         pick(list = seq("experiment_trial"),3), "break",
-                         pick(list,3),
+                         pick(list = seq("experiment_trial"),20), "attentionCheck1",
+                         pick(list, 20), "break",
+                         pick(list, 20),"attentionCheck1", 
+                         pick(list, 20),
                          "post-ques", "send", "final");
 
 
@@ -62,7 +65,7 @@ PennController("welcome",
         .settings.center()
         .settings.css("font-size", "large")
         ,
-        newText("bi3", "W&auml;hle einen bequemen und ruhigen Platz f&uuml;r die n&auml;chsten 5 Minuten! Vielen Dank!")
+        newText("bi3", "W&auml;hle einen bequemen und ruhigen Platz f&uuml;r die n&auml;chsten 20 Minuten! Vielen Dank!")
         .settings.center()
         .settings.css("font-size", "large")
         ,        
@@ -118,13 +121,12 @@ PennController("welcome",
         ,
         getButton("button2")
         .remove()
-        ,       
-        fullscreen()
         ,
-               
-        // Demographics begin
+        fullscreen() 
+        ,
+         // Demographics begin
         newText("demo", "<p><small><i> Bevor es losgeht, brauchen wir noch ein paar Informationen von Dir. Alle personenbezogenen Angaben werden anonymisiert gespeichert und eine sp&auml;tere Zuordnung der angegebenen Daten zu Versuchspersonen wird den Forschenden nicht mehr m&ouml;glich sein."
-        +" Bitte lies mehr &uuml;ber den Umgang mit den Daten in dem Informationsblatt nach (siehe unten).</i></small><p>")  
+        +" Bitte lies mehr &uuml;ber den Umgang mit den Daten in dem Informationsblatt nach.</i></small><p>")  
          .settings.css("font-size", "20px")
         .settings.center()
         ,
@@ -135,60 +137,51 @@ PennController("welcome",
         ,
         newDropDown("age", "Bitte eine Option ausw&auml;hlen")
         .settings.add("18" , "19" , "20", "21" , "22" , "23", "24" , "25" , "26", "27" , "28" , "29", "30" , "31")
+        .settings.log()
         ,
-        newText("agetext", "Alter:")
-        .settings.css("font-size", "20px")
+        newText("agetext", "1. Alter:")
+        .settings.css("font-size", "16px")
         .settings.bold()
         ,
         newCanvas("agecanvas", 1000, 40)
         .settings.add(0,0,getText("agetext"))
-        .settings.add(600,2, getDropDown("age"))
+        .settings.add(800,2, getDropDown("age"))
         .settings.center()
         .print()
        
         ,
-        newText("dominanteh", "Dominante Hand:")
-        .settings.css("font-size", "20px")
+        newText("geschlecht", "2. Geschlecht")
+        .settings.css("font-size", "16px")
         .settings.bold()
         ,
-        newDropDown("domhand","Bitte eine Option ausw&auml;hlen")
-        .settings.add("rechte Hand", "linke Hand", "Ich bin beidh&auml;ndig")
+        newDropDown("Geschlecht","Bitte eine Option ausw&auml;hlen")
+        .settings.add("m&aumlnnlich", "weiblich", "divers")
+        .settings.log()
         ,
-        newCanvas("domhand", 1000, 40)
-        .settings.add(0, 0, getText("dominanteh"))
-        .settings.add(600,2, getDropDown("domhand"))
+        newCanvas("geschlechtcanvas", 1000, 40)
+        .settings.add(0, 0, getText("geschlecht"))
+        .settings.add(800,2, getDropDown("Geschlecht"))
         .settings.center()
         .print()       
         ,       
-        newText("sex", "Geschlecht:")
-        .settings.css("font-size", "20px")
+        newText("german", "3. Ist Deutsch Deine Muttersprache")
+        .settings.css("font-size", "16px")
         .settings.bold()
         ,
-        newDropDown("sex", "Bitte eine Option ausw&auml;hlen")
-        .settings.add("weiblich", "m&auml;nnlich", "divers")
+        newDropDown("German", "Bitte eine Option ausw&auml;hlen")
+        .settings.add("Ja", "Nein")
+        .settings.log()
+
         ,
-        newCanvas("sexcanvas", 1000, 40)
-        .settings.add(0, 0, getText("sex"))
-        .settings.add(600,3, getDropDown("sex"))
+        newCanvas("germancanvas", 1000, 40)
+        .settings.add(0, 0, getText("german"))
+        .settings.add(800,3, getDropDown("German"))
         .settings.center()
         .print()
-        ,
-        newText("abschluss", "H&ouml;chster Bildungsabschluss:")
-        .settings.css("font-size", "20px")
-        .settings.bold()
-        ,
-        newDropDown("abschluss", "Bitte eine Option ausw&auml;hlen")
-        .settings.add("kein Abschluss","Schulabschluss","Abitur oder gleichwertiger Abschluss","Studium ohne Abschluss","Ausbildung","Bachelor", "Master", "Promotion")     // MAYBE ADD QUESTIONS ABOUT DIALECT AND DOMINANT HAND
-        ,
-         newCanvas("abschlusscanvas", 1000, 40)
-        .settings.add(0, 0, getText("abschluss"))
-        .settings.add(600,4, getDropDown("abschluss"))
-        .settings.center()
-        .print()
-              
+            
         ,      
-        newText("nativeDE", "<b>Du bist monolingual mit Deutsch aufgewachsen.</b><br><small>(keine weitere Sprache wurde vor dem 6. Lebensjahr erworben)</small>")
-        .settings.css("font-size", "20px")
+        newText("nativeDE", "<b>4. Bist Du bilingual aufgewachsen (hast Du vor Deinem 6. Lebensjahr eine andere Sprache als Deutsch gelernt)?</b>")
+        .settings.css("font-size", "16px")
         ,
         newTextInput("L2", "")
         .settings.size(200,30)
@@ -211,14 +204,32 @@ PennController("welcome",
         
         newCanvas("languagecanvas", 1000, 45)
         .settings.add(0, 0, getText("nativeDE"))
-        .settings.add(600, 10, getDropDown("language"))
+        .settings.add(800, 10, getDropDown("language"))
         .settings.center()
         .print()
         ,
         newCanvas ("filler", 1,30)
         .print()
         ,
-       newButton("consent","Fortsetzen")
+        newText("abschluss", "5.H&ouml;chster Bildungsabschluss:")
+        .settings.css("font-size", "16px")
+        .settings.bold()
+        ,
+        newDropDown("abschluss", "Bitte eine Option ausw&auml;hlen")
+         .settings.size(190,20)      
+        .settings.add("kein Abschluss","Schulabschluss","Abitur oder gleichwertiger Abschluss","Studium ohne Abschluss","Ausbildung","Bachelor", "Master", "Promotion")     // MAYBE ADD QUESTIONS ABOUT DIALECT AND DOMINANT HAND
+        .settings.log()
+        ,
+         newCanvas("abschlusscanvas", 1000, 40)
+        .settings.add(0, 0, getText("abschluss"))
+        .settings.add(800,4, getDropDown("abschluss"))
+        .settings.center()
+        .print()
+        ,
+        newCanvas ("filler", 1,30)
+        .print()
+        ,
+        newButton("consent","Fortsetzen")
         .settings.center()
         .print()
         .wait()
@@ -227,80 +238,71 @@ PennController("welcome",
          .test.selected()
           .success()
           .failure(
-                   newText("ageerror","Bitte gib Dein Alter an.")
+                   newText("ageerror","1. Bitte gib Dein Alter an.")
                    .settings.color("red")
                    .print())   
          ,
-         getDropDown("sex")
+         getDropDown("Geschlecht")
           .test.selected()
           .success()
           .failure(
-                   newText("sexerror","Bitte gib Dein Geschlecht an.")
+                   newText("sexerror","2. Bitte gib Dein Geschlecht an.")
                    .settings.color("red")
                    .print())
+          ,
+          getDropDown("German")
+          .test.selected()
+               .success()
+               .failure(
+                   newText("langerror","3. Bitte gib an, ob Deutsch Deine Muttersprache ist.")                   
+                   .settings.color("red")
+                   .print())      
           ,
           getDropDown("language")
           .test.selected()
                .success()
                .failure(
-                   newText("langerror","Bitte antworte auf die Frage bez&uuml;glich Deines sprachlichen Hintergrunds.")                   
+                   newText("langerror","4. Bitte antworte auf die Frage bez&uuml;glich Deines sprachlichen Hintergrunds.")                   
                    .settings.color("red")
                    .print())      
                
           ,
-           getDropDown("domhand")
+           getDropDown("abschluss")
                .test.selected()
                .success()
                .failure(
-                   newText("domhanderr","Bitte gib Deine dominante Hand an.")
+                   newText("domhanderr","Bitte gib Informationen &uuml;ber Deinen Bildungshintergrund.")
                    .settings.color("red")
                    .print())
                ,
                getDropDown("age").wait("first")
                ,
-               getDropDown("sex").wait("first")
+               getDropDown("Geschlecht").wait("first")
                ,
                getDropDown("language").wait("first")
                ,
-               getDropDown("domhand").wait("first")
+               getDropDown("German").wait("first")
+               ,
+               getDropDown("abschluss").wait("first")
                
                ,
                getButton("consent")
-               .remove()
-             
-               ,
-               // Create new variables from input
-               newVar("IDage")
-               .settings.global()
-               .set( getDropDown("age") )
-               ,
-               newVar("IDsex")
-               .settings.global()
-               .set( getDropDown("sex") )
-               ,
-               newVar("IDling")
-               .settings.global()
-               .set( getDropDown("language") )
-               ,
-               newVar("whichL2")
-               .settings.global()
-               .set( getTextInput("L2") )
-               ,
-               newVar("IDdomhand")
-               .settings.global()
-               .set(getDropDown("domhand"))
-               
-               
+               .remove() 
+         
+         
+         
                
 )
-.log("age", getVar("IDage"))
-.log("sex", getVar("IDsex"))
-.log("L2", getVar("IDling"))
-.log("dom_hand", getVar("IDdomhand"))
+
 
 
 .setOption("countsForProgressBar", false)   // no need to see the progress bar in the intro phase
 .setOption("hideProgressBar", true);
+
+
+
+
+
 
 
 //*******************************************************************************************************************************************************************
@@ -311,7 +313,7 @@ PennController("instructions",
         fullscreen()
         ,
 
-        newText("intro", "Vielen Dank f&uuml;r Deine Teilnahme an diesem Experiment! Das folgende Experiment besteht aus 3 Teilen: einer kurzen &Uuml;bungsrunde, dem tats&auml;chlichen Experiment und einem Post-Experiment Fragebogen. Insgesamt wird es ca. 5 Minuten in Anspruch nehmen.")
+        newText("intro", "Vielen Dank f&uuml;r Deine Teilnahme an diesem Experiment! Das folgende Experiment besteht aus 3 Teilen: einer kurzen &Uuml;bungsrunde, dem tats&auml;chlichen Experiment und einem Post-Experiment Fragebogen. Insgesamt wird es ca. 20 Minuten in Anspruch nehmen.")
         .settings.css("font-size", "20px")
         ,
                
@@ -351,26 +353,23 @@ PennController("instructions",
                         +"<p>(1) <b>Als erstes siehst Du den ersten Kontextsatz.</b> Lies ihn sorgf&auml;ltig durch und klicke auf die <b> Leertaste </b> um den n&auml;chsten Kontextsatz zu enth&uuml;llen."
                        )
                 .settings.css("font-size", "20px")
+               .settings.center()
         ,
-         newText("instructions_b", "(2) <b>Sobald Du auf die Leertaste geklickt hast, wird der erste Kontextsatz verschwinden und Du wirst einen neuen Kontextsatz sehen.</b> "
+         
+      
+        newText("instructions_b", "(2) <b>Sobald Du auf die Leertaste geklickt hast, wird der erste Kontextsatz verschwinden und Du wirst einen neuen Kontextsatz sehen.</b><br> "
                  +" Lies ihn sorgf&auml;ltig durch und klicke auf die <b> Leertaste </b> um den n&auml;chsten und letzten Satz zu enth&uuml;llen."
                        )
                 .settings.css("font-size", "20px")
+               .settings.center()
         ,
-         newText("instructions_c",  "(3) <b>Sobald Du auf die Leertaste erneut geklickt hast, wird der zweite Kontextsatz verschwinden und Du wirst den letzten Satz sehen.</b>"
+         newText("instructions_c",  "(3) <b>Sobald Du auf die Leertaste erneut geklickt hast, wird der zweite Kontextsatz verschwinden und Du wirst den letzten Satz sehen.</b><br>"
                  +" Lies ihn sorgf&auml;ltig durch und klicke auf die <b> Leertaste </b> um die Bewertungsskala f&uuml;r Verst&auml;ndlichkeit der gesamten Geschichte zu enth&uuml;llen."
                        )
                 .settings.css("font-size", "20px")
+               .settings.center()
         ,
-         newText("instructions_d", "(4) Es ist besonders wichtig, dass Du die S&auml;tze aufmerksam liest und versuchst, Dir deren Inhalt zu merken. Am Ende jeder Geschichte wirst Du eine Bewertungsskala sehen."
-                           +" <b>Bitte bewerte, wie viel Sinn die Geschichte insgesamt ergibt.</b>"
-                           )
-                 .settings.css("font-size", "20px")
-        ,
-        newText("instructions_e", "<i>Klicke auf die Leertaste um die &Uuml;bungsrunde zu starten</i>")
-        .settings.css("font-size", "20px")
-        .settings.center()
-        ,       
+               
         newText("context1", "e.g, <i>'Nach dem Ende des Konzerts entspannten sich die Orchestermitglieder.'</i>")
         .settings.css("font-size", "18px")
         .settings.css("font-family","courier")
@@ -383,8 +382,8 @@ PennController("instructions",
         .settings.css("font-size", "18px")
         .settings.css("font-family","courier")
         ,
-        newCanvas("instruccanvas",1000, 500)
-        .settings.add(20,0, getText("instructions_a"))  // added first set of instructions
+        newCanvas("instruccanvas",1100, 500)
+        .settings.add(40,0, getText("instructions_a"))  // added first set of instructions
         .settings.add(30,280, getText("context1"))      // added the first context sentence
         .settings.center()
         .print()
@@ -393,11 +392,11 @@ PennController("instructions",
         .wait()
         ,
         getCanvas("instruccanvas")
-       .remove( getText("context1"))  //removed 1st sentence
+        .remove( getText("context1"))  //removed 1st sentence
         .remove( getText("instructions_a")) //removes 1st instructions
         ,
-        getCanvas("instruccanvas",1000, 500)
-        .settings.add(20,150, getText("instructions_b"))  //added the second set of instructions
+        getCanvas("instruccanvas")
+        .settings.add(40,150, getText("instructions_b"))  //added the second set of instructions
         .settings.add(30,280, getText("context2"))      //added the second context sentence
         .settings.center()
         .print()
@@ -407,12 +406,12 @@ PennController("instructions",
         
         ,
         getCanvas("instruccanvas")
-       .remove( getText("context2"))   //removed 2nd sentence
+        .remove( getText("context2"))   //removed 2nd sentence
         .remove( getText("instructions_b"))//removes 2nd instructions
         ,
-        getCanvas("instruccanvas",1000, 500)
-        .settings.add(20,150, getText("instructions_c"))   //added the second set of instructions
-        .settings.add(30,280, getText("context3"))       //added the second context sentence 
+        getCanvas("instruccanvas")
+        .settings.add(40,150, getText("instructions_c"))   //added the second set of instructions
+        .settings.add(30,280, getText("context3"))       //added the second context sentence
         .settings.center()
         .print()
         ,
@@ -422,24 +421,51 @@ PennController("instructions",
         getCanvas("instruccanvas")
        .remove( getText("context3"))  //removed 1st sentence
        .remove( getText("instructions_c")) //removes 1st instructions
-        ,
-        newScale("comprehensibility", "1", "2", "3", "4", "5", "6", "7")
-       .settings.before( newText("left", "die Geschichte ergibt keinen Sinn   ").settings.css("font-size", "17px").settings.css("font-family","courier"))
-       .settings.after( newText("right", "   die Geschichte ergibt durchaus Sinn").settings.css("font-size", "17px").settings.css("font-family","courier"))
-       .settings.center()
-        ,
-        getCanvas("instruccanvas")
-        .settings.add(20,100, getText("instructions_d"))   //added the second set of instructions
-        .settings.add(30,200, getScale("comprehensibility"))       //added the second context sentence
-        .settings.add(250,300, getText("instructions_e")) 
+       .remove()
+    ,
+
+      newText("instructions_d", "<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(4) Es ist besonders wichtig, dass Du die S&auml;tze aufmerksam liest und versuchst, Dir deren Inhalt zu merken. Am Ende jeder Geschichte wirst Du eine Bewertungsskala sehen.<p><b>Bitte bewerte, wie viel Sinn die Geschichte insgesamt ergibt.</b>"
+                           )
+                 .settings.css("font-size", "20px")
+                 .settings.center()
+                 .print()
+            
+    ,      
+      newScale("comprehensibility_intr", "1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40" ,"41","42","43","44","45","46","47","48","49", "50")
+      .settings.css("font-family", "times new roman").settings.css("font-size", "12px")
+      .settings.before( newText("comp", "nicht<br>verst&auml;ndlich")
+                        .settings.css("font-family", "times new roman").settings.css("font-size", "14px").settings.css("width", "5em", "text-align", "right"))
+      .settings.after(newText("incom", "  "+"gut <br>verst&auml;ndlich")
+                      .settings.css("font-family", "times new roman").settings.css("font-size", "14px").settings.css("width", "8em", "text-align", "right"))
+      .labelsPosition("under")
+      .settings.size(1150)
+      .settings.labelsPosition("bottom")
+      .settings.center()
+      .settings.log("last")
+      ,
+     
+    newCanvas("emptycan", 1,50)
+    .print()
+      , 
+    
+     newText("instructions_e", "<i>Klicke auf die Leertaste um die &Uuml;bungsrunde zu starten</i>")
+     .settings.css("font-size", "20px")
+     .settings.center()
+    
+        , 
+        
+        newCanvas("instruccanvas2",  1200, 400)
+        .settings.add(0,0, getText("instructions_d"))   //added the second set of instructions
+        .settings.add(0,200, getScale("comprehensibility_intr"))       //added the second context sentence
+        .settings.add(0,300, getText("instructions_e"))
         .settings.center()
         .print()
         ,
         newKey("con3"," ")
         .wait()
-        ,
-        getCanvas("instruccanvas")
-       .remove( getScale("comprehensibility"))  //removed 1st sentence
+       ,
+        getCanvas("instruccanvas2")
+       .remove( getScale("comprehensibility_intr"))  //removed 1st sentence
        .remove( getText("instructions_d")) //removes 1st instructions
        .remove( getText("instructions_e"))
         
@@ -448,7 +474,7 @@ PennController("instructions",
 //************************************************************
 // PRACTICE TRIALS
 //************************************************************
-PennController.Template( PennController.GetTable("test_list.csv")
+PennController.Template( PennController.GetTable("test_list1.csv")
                          .filter("itemType" , "practice")
                          ,
                          variable => ["practice",
@@ -475,7 +501,7 @@ PennController.Template( PennController.GetTable("test_list.csv")
                                        newText ("read_ctxt","<i>Lies bitte den Kontextsatz aufmerksam durch. Wenn Du fertig bist, dr&uuml;cke auf die Leertaste um den n&auml;chsten Satz zu enth&uuml;llen</i>")
                                       .settings.css("font-size", "18px")
                                       .settings.center()
-                                      .settings.css("font-family","times new roman")
+                                      .settings.css("font-family","times-new")
                                       .settings.color("red")
                                       .print(50,200)
                                       ,
@@ -513,7 +539,7 @@ PennController.Template( PennController.GetTable("test_list.csv")
                                        newText ("read_ctxt","<i>Lies bitte den Kontextsatz aufmerksam durch. Wenn Du fertig bist, dr&uuml;cke auf die Leertaste um den n&auml;chsten Satz zu enth&uuml;llen</i>")
                                       .settings.css("font-size", "18px")
                                       .settings.center()
-                                      .settings.css("font-family","times new roman")
+                                      .settings.css("font-family","times-new")
                                       .settings.color("red")
                                       .print(50,200)
                                       ,
@@ -550,15 +576,15 @@ PennController.Template( PennController.GetTable("test_list.csv")
                                        newText ("read_ctxt3","<i>Lies bitte den Kontextsatz aufmerksam durch. Wenn Du fertig bist, dr&uuml;cke auf die Leertaste um die Bewertungsskala zu enth&uuml;llen</i>")
                                       .settings.css("font-size", "18px")
                                       .settings.center()
-                                      .settings.css("font-family","times new roman")
+                                      .settings.css("font-family","times-new")
                                       .settings.color("red")
                                       .print(50,200)
                                       ,
-                                      newText("ctxt3", variable.critical) 
+                                      newText("ctxt3", variable.critical)
                                       .print()
                                       .settings.css("font-size", "25px")
                                       .settings.css("font-family","courier")
-                                      .print(50,240) 
+                                      .print(50,240)
                                       ,
                                       newKey("after_ctxt2", " ")
                                       .wait()
@@ -570,25 +596,33 @@ PennController.Template( PennController.GetTable("test_list.csv")
                                       getText("ctxt3")
                                       .remove()
                                       ,
-                                      newText("<br><br><br><b>Wie verst&auml;ndlich war die vorher gelesene Geschichte insgesamt?</b><br><br><br>")
-                                      .settings.css("font-size", "20px")
+                                      newText("<br><br><br><b>Wie verst&auml;ndlich war die Geschichte insgesamt?</b><br><br><br>")
+                                      .settings.css("font-size", "20px").settings.css("font-family","times-new")
                                       .settings.center()
                                       .print()
                                     //  .print(375,250)
                                       ,
-                                       newText ("choose","<i>Bewerte bitte die Verst&auml;ndlichkeit der zuvor gelesenen Geschichte mittels der Bewertungsskala. Wenn Du fertig bist, validiere deine Antwort um fortzufahren</i><br><br>")
-                                      .settings.css("font-size", "18px")
-                                      .settings.css("font-family","times new roman")
+                                       newText ("choose","<i>Bewerte bitte die Verst&auml;ndlichkeit der zuvor gelesenen Geschichte mittels der Bewertungsskala. Wenn Du fertig bist, validiere deine Antwort um fortzufahren.</i><br><br>")
+                                      .settings.css("font-size", "16px")
+                                      .settings.css("font-family","times-new")
                                       .settings.color("red")
                                       .settings.center()
                                       .print()
                                     //  .print(220,320)
                                       ,
-                                      newScale("comprehensibility_1", "1", "2", "3", "4", "5", "6", "7")
-                                      .settings.before( newText("left1", "die Geschichte ergibt keinen Sinn   ").settings.css("font-size", "19px").settings.css("font-family","courier"))
-                                      .settings.after(newText("right1", "   die Geschichte ergibt durchaus Sinn").settings.css("font-size", "19px").settings.css("font-family","courier"))
-                                      .settings.center()
-                                      .print()
+                                      newScale("comprehensibility_prac", "1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40" ,"41","42","43","44","45","46","47","48","49", "50")
+                                          .settings.css("font-family", "times new roman").settings.css("font-size", "12px")
+                                          .settings.before( newText("incomp", "nicht<br>verst&auml;ndlich")
+                                                            .settings.css("font-family", "times new roman").settings.css("font-size", "14px").settings.css("width", "5em"))
+                                          .settings.after(newText("comp", "gut <br>verst&auml;ndlich")
+                                                          .settings.css("font-family", "times new roman").settings.css("font-size", "14px").settings.css("width", "5em"))
+                                          .settings.size(1090)
+                                          .settings.labelsPosition("bottom")
+                                          .settings.center()
+                                          .print()
+                                          .settings.log("last")
+                                          
+                                      //.print(280,320)
                                      // .print(280,380)
                                       ,
                                       newCanvas ("filler1", 1,25)
@@ -599,11 +633,11 @@ PennController.Template( PennController.GetTable("test_list.csv")
                                       .settings.center()
                                       //.print(715,420)
                                       .print()
-                                      .wait( getScale("comprehensibility_1").test.selected()
+                                      .wait( getScale("comprehensibility_prac").test.selected()
                                                                               .failure(
                                                                                 newText("timedout","<b>Bitte bewerte die S&auml;tze anhand der Bewertungsskala!</b>")
                                                                                  .settings.css("font-size", "19px")
-                                                                                 .settings.css("font-family","courier")
+                                                                                 .settings.css("font-family","times-new")
                                                                                  .settings.color("red")
                                                                                  .settings.center()
                                                                                  .print()
@@ -627,8 +661,8 @@ PennController.Template( PennController.GetTable("test_list.csv")
 // EXPERIMENTAL TRIALS
 //**********************************************************************
 
-PennController.Template( PennController.GetTable("test_list.csv")
-                         .filter("itemType" , "critical")
+PennController.Template( PennController.GetTable("test_list1.csv")
+                         .filter("itemType" , (/^(critical|filler)$/))
                          ,
                          variable => ["experiment_trial",
                                       
@@ -722,22 +756,27 @@ PennController.Template( PennController.GetTable("test_list.csv")
                                       getText("ctxt3")
                                       .remove()
                                       ,
-                                      newText("<br><br><br><b>Wie verst&auml;ndlich war die vorher gelesene Geschichte insgesamt?</b><br><br><br>")
-                                      .settings.css("font-size", "20px")
+                                      newText("<br><br><br><b>Wie verst&auml;ndlich war die Geschichte insgesamt?</b><br><br><br>")
+                                      .settings.css("font-size", "20px").settings.css("font-family","times-new")
                                       .settings.center()
                                       //.print(375,250)
                                       .print()
                                       ,
                                        
-                                      newScale("comprehensibility_1", "1", "2", "3", "4", "5", "6", "7")
-                                      .settings.before( newText("left1", "die Geschichte ergibt keinen Sinn   ").settings.css("font-size", "19px").settings.css("font-family","courier"))
-                                      .settings.after(newText("right1", "   die Geschichte ergibt durchaus Sinn").settings.css("font-size", "19px").settings.css("font-family","courier"))
-                                      .settings.center()
-                                      .print()
-                                      //.print(280,320)
+                                        newScale("comprehensibility_1", "1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40" ,"41","42","43","44","45","46","47","48","49", "50")
+                                          .settings.css("font-family", "times new roman").settings.css("font-size", "12px")
+                                          .settings.before( newText("incomp", "nicht<br>verst&auml;ndlich")
+                                                            .settings.css("font-family", "times new roman").settings.css("font-size", "14px").settings.css("width", "5em"))
+                                          .settings.after(newText("comp", "gut <br>verst&auml;ndlich")
+                                                          .settings.css("font-family", "times new roman").settings.css("font-size", "14px").settings.css("width", "5em"))
+                                          .settings.size(1090)
+                                          .settings.labelsPosition("bottom")
+                                          .settings.center()
+                                          .print()
+                                          .settings.log("last")
                                      
                                       ,
-                                      newCanvas ("filler1", 1,18)
+                                      newCanvas ("filler1", 1,30)
                                       .print()
                                       ,
                                       newButton("validation", "Best&auml;tigen")
@@ -748,7 +787,7 @@ PennController.Template( PennController.GetTable("test_list.csv")
                                                                               .failure(
                                                                                 newText("timedout","<br><br><br><b>Bitte bewerte die S&auml;tze anhand der Bewertungsskala!</b>")
                                                                                  .settings.css("font-size", "19px")
-                                                                                 .settings.css("font-family","courier")
+                                                                                 .settings.css("font-family","times-new")
                                                                                  .settings.color("red")
                                                                                  .settings.center()
                                                                                  .print()
@@ -803,7 +842,7 @@ PennController( "end_practice" ,
     .setOption("hideProgressBar", true);
 
 //*******************************************************************************************************************************************************************
-// TAKE A BREAK 
+// TAKE A BREAK
 //******************************************************************************************************************************************
 PennController( "break" ,
                 
@@ -1001,7 +1040,95 @@ PennController("post-ques",
                .set(getTextInput("strategy") )
  
               )
+//************************************************************************************** 
+// ATTENTIONCHECKS   as adapted from Kathy's script
+//**************************************************************************************
     
+    
+//  Attentioncheck 1
+PennController("attentionCheck1",
+    newText("attentionCheck1", "Bitte w&auml;hle auf der untenstehenden Skala die Nummer 15 aus:")
+    .settings.center()
+    .settings.css("font-family","times new roman") .settings.css("font-size", "20px")
+    .print()
+   
+     ,
+    
+    newCanvas("empty canvas", 1, 30)
+          .print()
+    ,
+               
+newScale("attentionslider1","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40" ,"41","42","43","44","45","46","47","48","49", "50")
+.settings.center()
+.settings.size (1100)
+.settings.labelsPosition("bottom")
+.print()
+.settings.log()
+.wait()
+    , 
+
+newCanvas("empty canvas", 1, 40)
+          .print()
+    ,
+               
+     newButton("okay", "Best&auml;tigen")
+        .settings.css("font-family", "times-new").settings.css("font-size", "14px")
+        .settings.center()
+        .print()
+        .wait()
+        .remove()
+    ,
+   
+    getText("attentionCheck1")
+        .remove()
+    ,   
+    getScale("attentionslider1")
+        .remove()
+    
+    );
+
+
+// Attentioncheck 2
+PennController("attentionCheck2",
+    newText("attentionCheck2", "Bitte w&auml;hle auf der untenstehenden Skala die Nummer 35 aus:")
+    .settings.center()
+    .settings.css("font-family","times new roman") .settings.css("font-size", "20px")
+    .print()
+   
+     ,
+    
+    newCanvas("empty canvas", 1, 30)
+          .print()
+    ,
+               
+newScale("attentionslider2", "1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40" ,"41","42","43","44","45","46","47","48","49", "50")
+.settings.center()
+.settings.size (1100)
+.settings.labelsPosition("bottom")
+.print()
+.settings.log()
+.wait()
+    , 
+
+newCanvas("empty canvas", 1, 40)
+          .print()
+    ,
+               
+     newButton("okay", "Best&auml;tigen")
+        .settings.css("font-family", "times-new").settings.css("font-size", "14px")
+        .settings.center()
+        .print()
+        .wait()
+        .remove()
+    ,
+   
+    getText("attentionCheck2")
+        .remove()
+    ,   
+    getScale("attentionslider2")
+        .remove()
+    
+    );
 //*******************************************************************************************************************************************************************
 // SEND THE RESULTS TO THE SERVER
 //******************************************************************************************************************************************
